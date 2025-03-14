@@ -1,84 +1,115 @@
-// Selecting DOM elements for interaction
-const searchInput = document.getElementById("searchinput"), // Input field for word search
-  searchButton = document.querySelector(".searchbar button"), // Search button
-  wordDisplay = document.querySelector(".text h2 span"), // Word display in the results section
-  meaningDisplay = document.querySelector(".text p:nth-of-type(2) span"), // Meaning display
-  exampleDisplay = document.querySelector(".text p:nth-of-type(3) span"), // Example display
-  synonymsDisplay = document.querySelector(".text p:nth-of-type(4) span"); // Synonyms display
-let audio; // For storing the pronunciation audio
+const wordsArray = [
+    "serendipity", "ephemeral", "luminous", "exuberant", "melancholy", 
+    "tranquil", "ethereal", "ineffable", "sagacious", "halcyon",
+    "ambivalence", "quintessential", "elusive", "solitude", "euphoria",
+    "dichotomy", "nostalgia", "vivacious", "labyrinth", "panacea",
+    "resilience", "tenacity", "wanderlust", "zenith", "cryptic",
+    "idyllic", "jubilant", "pristine", "reverie", "whimsical"
+];
+// Fetch Word of the Day
+async function fetchWordOfTheDay() {
+    try {
+        // Get the current date
+        const currentDate = new Date();
+        const dayIndex = currentDate.getDate() % wordsArray.length; // Cycle through the array
+        const wordOfTheDay = wordsArray[dayIndex];
 
-/**
- * Updates the UI with the word's details or displays an error message.
- * @param {Object} result - API response containing word data.
- * @param {String} word - Word that was searched.
- */
-function data(result, word) {
-  if (result.title) {
-    // If the word is not found, display an error message
-    wordDisplay.innerText = "Not Found";
-    meaningDisplay.innerText = `Can't find the meaning of "${word}". Please, try another word.`;
-    exampleDisplay.innerText = "";
-    synonymsDisplay.innerText = "";
-  } else {
-    // If the word is found, update the UI with its details
-    let definitions = result[0].meanings[0].definitions[0],
-      phonetics = result[0].phonetics[0] ? result[0].phonetics[0].text : "No phonetics available";
+        // Simulate fetching details from the dictionary API
+        const dictionaryApiBaseUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${wordOfTheDay}`;
+        const dictionaryResponse = await fetch(dictionaryApiBaseUrl);
+        const wordData = await dictionaryResponse.json();
 
-    wordDisplay.innerText = `${result[0].word} (${phonetics})`; // Display word and phonetics
-    meaningDisplay.innerText = definitions.definition || "No definition available."; // Display definition
-    exampleDisplay.innerText = definitions.example || "No example available."; // Display example or fallback text
-
-    audio = new Audio(result[0].phonetics[0]?.audio || ""); // Load pronunciation audio if available
-
-    // Handle synonyms
-    if (!definitions.synonyms || definitions.synonyms.length === 0) {
-      synonymsDisplay.innerText = "No synonyms available.";
-    } else {
-      synonymsDisplay.innerHTML = ""; // Clear previous synonyms
-      definitions.synonyms.slice(0, 5).forEach((synonym, index) => {
-        // Limit to 5 synonyms
-        synonymsDisplay.innerHTML += `${synonym}${index < 4 ? ", " : ""}`; // Display synonyms as a list
-      });
+        // Display the word details
+        displayWordOfTheDay(wordData, wordOfTheDay);
+    } catch (error) {
+        alert("An error occurred while fetching the Word of the Day.");
     }
-  }
 }
 
-/**
- * Fetches word data from the Dictionary API and updates the UI.
- * @param {String} word - Word to search.
- */
-function fetchApi(word) {
-  wordDisplay.innerText = "Loading..."; // Display loading state
-  meaningDisplay.innerText = "";
-  exampleDisplay.innerText = "";
-  synonymsDisplay.innerText = "";
+// Display Word of the Day
+function displayWordOfTheDay(result, word) {
+    const currentDate = new Date().toDateString();
+    document.getElementById("currentDate").innerText = `Today: ${currentDate}`;
+    document.getElementById("dayWord").innerText = word || "N/A";
+    document.getElementById("dayWordphonetics").innerText = result[0]?.phonetics[0]?.text || "N/A";
+    document.getElementById("dayWordmeaning").innerText = result[0]?.meanings[0]?.definitions[0]?.definition || "N/A";
+    document.getElementById("dayWordexample").innerText = result[0]?.meanings[0]?.definitions[0]?.example || "No example available";
 
-  let url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`; // API endpoint
-
-  // Fetch data and handle response or errors
-  fetch(url)
-    .then((response) => response.json())
-    .then((result) => data(result, word))
-    .catch(() => {
-      wordDisplay.innerText = "Error";
-      meaningDisplay.innerText = `Unable to fetch the meaning of "${word}". Please try again later.`;
-    });
+    // Prepare audio pronunciation
+const audioSrc = result[0]?.phonetics[0]?.audio || null;
+prepareAudio(audioSrc);
 }
 
-// Event listener for the search button
-searchButton.addEventListener("click", () => {
-  let word = searchInput.value.trim(); // Get input value and trim spaces
-  if (word) {
-    fetchApi(word); // Fetch word data
-  }
+// Handle word pronunciation audio
+function prepareAudio(audioSrc) {
+const dayWordVolume = document.getElementById("dayWordvolume");
+
+if (audioSrc) {
+    const audio = new Audio(audioSrc);
+    dayWordVolume.onclick = () => audio.play();
+} else {
+    dayWordVolume.onclick = () => alert("No pronunciation audio available for this word.");
+}
+}
+
+// Trigger Word of the Day Fetch
+document.addEventListener("DOMContentLoaded", fetchWordOfTheDay);
+
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
+const volume = document.getElementById("volume");
+const wordElement = document.getElementById("word");
+const phoneticsElement = document.getElementById("phonetics");
+const meaningElement = document.getElementById("meaning");
+const exampleElement = document.getElementById("example");
+const synonymsElement = document.getElementById("synonyms");
+const antonymsElement = document.getElementById("antonyms");
+const dayWordElement = document.getElementById("dayWord");
+let audio;
+
+// Fetch and display word data
+function fetchWordData(word) {
+    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(result => displayWordData(result, word))
+        .catch(() => {
+            alert(`Cannot find the word "${word}". Please try another.`);
+        });
+}
+
+// Display word data in the UI
+function displayWordData(result, word) {
+    if (result.title) {
+        alert(`Cannot find the meaning of "${word}".`);
+    } else {
+        const data = result[0];
+        wordElement.innerText = data.word || "N/A";
+        phoneticsElement.innerText = data.phonetics[0]?.text || "N/A";
+        meaningElement.innerText = data.meanings[0]?.definitions[0]?.definition || "N/A";
+        exampleElement.innerText = data.meanings[0]?.definitions[0]?.example || "No example available";
+        synonymsElement.innerText = data.meanings[0]?.synonyms?.join(", ") || "No synonyms available";
+        antonymsElement.innerText = data.meanings[0]?.antonyms?.join(", ") || "No antonyms available";
+        console.log(result);
+        audio = new Audio(data.phonetics[0]?.audio || null);
+    }
+}
+
+// Play pronunciation audio
+volume.addEventListener("click", () => {
+    if (audio) audio.play();
+    else alert("No pronunciation audio available.");
 });
 
-// Event listener for the Enter key in the search input
-searchInput.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") {
-    let word = searchInput.value.trim(); // Get input value and trim spaces
-    if (word) {
-      fetchApi(word); // Fetch word data
+// Handle search button click
+searchBtn.addEventListener("click", () => {
+    const word = searchInput.value.trim();
+    if (word) fetchWordData(word);
+});
+// Handle search on Enter key press
+searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        const word = searchInput.value.trim();
+        if (word) fetchWordData(word);
     }
-  }
 });

@@ -4,32 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary App </title>
-    <link rel="stylesheet" href="app.css">
+    <title>Dictionary App</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="app.css">
 </head>
 
 <body>
-    <nav>
-        <h1> Dictionary App</h1>
-    </nav>
-    <div class="conatainer">
-        <div class="searchbar">
-            <input type="text" placeholder="enter a word" id="searchinput">
-            <button>Search</button>
+    <header>
+        <h1>Dictionary App</h1>
+    </header>
 
+    <main class="mainContainer">
+        <!-- Word of the Day Section -->
+        <div class="container">
+            <h3>WORD OF THE DAY</h3>
+            <p id="currentDate"></p>
+            <div class="result">
+                <h2><span id="dayWord"></span></h2>
+                <div class="audio-container">
+                    <p><span id="dayWordphonetics"></span></p>
+                      <i id="dayWordvolume" class="fas fa-volume-up"></i>
+                </div>
+                <p><span id="dayWordmeaning"></span></p>
+                <p><span id="dayWordexample"></span></p>
+            </div>
         </div>
-        <div class="text">
-            <h2>Word:<span></span></h2>
-            <p></p>
-            <i class="fas fa-volume-up"></i>
-            <p>Meaning:<span></span></p>
-            <p>Example:<span></span></p>
-            <p>Synonyms:<span></span></p><br>
-            <a href="">Read More</a>
+    
+        <!-- Search Section -->
+        <div class="container">
+            <div class="searchbar">
+                <input type="text" placeholder="Enter a word" id="searchInput">
+                <button id="searchBtn">Search</button>
+            </div>
+            <div class="result">
+                <h2>Word: <span id="word"></span></h2>
+                <div class="audio">
+                    <p>Phonetics: <span id="phonetics"></span></p>
+                    <i class="fas fa-volume-up" id="volume"></i>
+                </div>
+                <p>Meaning: <span id="meaning"></span></p>
+                <p>Example: <span id="example"></span></p>
+                <p>Synonyms: <span id="synonyms"></span></p>
+                <p>Antonyms: <span id="antonyms"></span></p>
+            </div>
         </div>
-    </div>
+    </main>
+
     <script src="app.js"></script>
 </body>
 
