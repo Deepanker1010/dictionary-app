@@ -27,7 +27,7 @@ header {
 }
 .container {
     width: 400px;
-    padding: 20px;
+    padding: 14px;
     background-color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -116,6 +116,7 @@ header {
 .result a:hover {
     color: #e69500;
 }
+
 /* Responsive Design */
 @media (max-width: 768px) {
     header {
