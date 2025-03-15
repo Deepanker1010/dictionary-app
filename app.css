@@ -112,3 +112,38 @@ header {
 .result a:hover {
     color: #e69500;
 }
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        font-size: 24px; /* Adjust font size for smaller screens */
+        height: auto; /* Adjust height for flexibility */
+        padding: 10px;
+    }
+    .mainContainer {
+        flex-direction: column; /* Stack elements vertically */
+    }
+    .container {
+        width: 95%; /* Full-width for smaller screens */
+        margin: 10px;
+    }
+    .searchbar button {
+        font-size: 14px; /* Smaller button text */
+    }
+    .result h2,
+    .result p {
+        font-size: 16px; /* Adjust font size */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        font-size: 18px; /* Further reduce font size */
+    }
+    .searchbar input,
+    .searchbar button {
+        font-size: 12px; /* Smaller input and button text */
+    }
+    .result {
+        font-size: 14px; /* Adjust result font size */
+    }
+}
