@@ -6,14 +6,18 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f3de2c; /* Soft background color */
+    /* background-color: #f3de2c; Soft background color */
     color: #333;
+    background-image: url('background_img_for_my_dictionary_app.jpeg');
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
 }
 
 header {
     display: block; 
     text-align: center; 
-    background-color: #5c8001; 
+    box-shadow:0 4px 10px rgba(0, 0, 0, 0.1);;
     color: white; 
     font-size: 28px; 
     height: 90px;
