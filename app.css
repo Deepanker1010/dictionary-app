@@ -116,6 +116,15 @@ header {
 .result a:hover {
     color: #e69500;
 }
+#wordofday-img, #word-img {
+    overflow: hidden;
+    display: block; /* Ensure it behaves as a block element */
+}
+
+#wordofday-img img, #word-img img {
+    object-fit: contain; /* Prevents image distortion */
+    display: block; /* Ensure it behaves as a block element */
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
