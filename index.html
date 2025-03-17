@@ -16,39 +16,46 @@
     </header>
 
     <main class="mainContainer">
+      <div class="tab-links">
+            <button onclick="openTab('Tab1')">WORD OF THE DAY</button>
+            <button onclick="openTab('Tab2')">DICTIONARY APP</button>
+        </div> 
         <!-- Word of the Day Section -->
-        <div class="container">
-            <h3>WORD OF THE DAY</h3>
-            <p id="currentDate"></p>
-            <div class="result">
-                <h2><span id="dayWord"></span></h2>
-                <div class="audio-container">
-                    <p><span id="dayWordphonetics"></span></p>
-                      <i id="dayWordvolume" class="fas fa-volume-up"></i>
+        <div id="Tab1" class="tab">
+            <div class="container">
+                <h3>WORD OF THE DAY</h3>
+                <p id="currentDate"></p>
+                <div class="result">
+                    <h2><span id="dayWord"></span></h2>
+                    <div class="audio-container">
+                        <p><span id="dayWordphonetics"></span></p>
+                        <i id="dayWordvolume" class="fas fa-volume-up"></i>
+                    </div>
+                    <p><span id="dayWordmeaning"></span></p>
+                    <p><span id="dayWordexample"></span></p>
+                    <p><span id="wordofday-img"></span></p>
                 </div>
-                <p><span id="dayWordmeaning"></span></p>
-                <p><span id="dayWordexample"></span></p>
-                <p><span id="wordofday-img"></span></p>
             </div>
         </div>
-    
-        <!-- Search Section -->
-        <div class="container">
-            <div class="searchbar">
-                <input type="text" placeholder="Enter a word" id="searchInput">
-                <button id="searchBtn">Search</button>
-            </div>
-            <div class="result">
-                <h2>Word: <span id="word"></span></h2>
-                <div class="audio">
-                    <p>Phonetics: <span id="phonetics"></span></p>
-                    <i class="fas fa-volume-up" id="volume"></i>
+         <div id="Tab2" class="tab"> 
+            <!-- Search Section -->
+            <div class="container">
+                <div class="searchbar">
+                    <input type="text" placeholder="Enter a word" id="searchInput">
+                    <button id="searchBtn">Search</button>
                 </div>
-                <p>Meaning: <span id="meaning"></span></p>
-                <p>Example: <span id="example"></span></p>
-                <p>Synonyms: <span id="synonyms"></span></p>
-                <p>Antonyms: <span id="antonyms"></span></p>
-                <p>Image: <span id="word-img"></span></p>
+                <div class="result">
+                    <h2>Word: <span id="word"></span></h2>
+                    <div class="audio">
+                        <p>Phonetics: <span id="phonetics"></span></p>
+                        <i class="fas fa-volume-up" id="volume"></i>
+                    </div>
+                    <p>Meaning: <span id="meaning"></span></p>
+                    <p>Example: <span id="example"></span></p>
+                    <p>Synonyms: <span id="synonyms"></span></p>
+                    <p>Antonyms: <span id="antonyms"></span></p>
+                    <p>Image: <span id="word-img"></span></p>
+                </div>
             </div>
         </div>
     </main>

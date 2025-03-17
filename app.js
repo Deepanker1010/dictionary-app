@@ -1,3 +1,4 @@
+
 const wordsArray = [
     "serendipity", "ephemeral", "luminous", "exuberant", "melancholy",
     "tranquil", "ethereal", "ineffable", "sagacious", "halcyon",
@@ -162,3 +163,15 @@ function inputwordimg(imgname) {
             alert('Error:', error);
         });
 }
+function openTab(tabName) {
+    let tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabName).style.display = 'block';
+
+    let buttons = document.querySelectorAll('.tab-links button');
+    buttons.forEach(button => button.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Set default active tab
+  openTab('Tab1');

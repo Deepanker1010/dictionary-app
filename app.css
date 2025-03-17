@@ -24,6 +24,22 @@ header {
 }
 .mainContainer{
     display: flex;
+    flex-direction: column; /* Keeps elements stacked vertically */
+    align-items: center; /* Horizontally center the content */
+    justify-content: center; /* Vertically center the content */
+    min-height: 80vh; /* Full viewport height for centering */
+}
+.tab {
+    display: none;
+}
+.tab-links button {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background: #f1f1f1;
+}
+.tab-links button.active {
+    background: #ccc;
 }
 .container {
     width: 400px;
