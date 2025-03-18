@@ -9,59 +9,46 @@ body {
     /* background-color: #f3de2c; Soft background color */
     color: #333;
     background-image: url('background_img_for_my_dictionary_app.jpeg');
-    background-repeat: no-repeat;
-    /* Prevents repeating the image */
-    background-size: cover;
-    /* Ensures the image covers the entire element */
-    background-position: center;
-    /* Centers the image */
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
 }
 
 header {
-    display: block;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ;
-    color: white;
-    font-size: 28px;
+    display: block; 
+    text-align: center; 
+    box-shadow:0 4px 10px rgba(0, 0, 0, 0.1);;
+    color: white; 
+    font-size: 28px; 
     height: 90px;
 }
-
-.mainContainer {
+.mainContainer{
     display: flex;
-    flex-direction: column;
-    /* Keeps elements stacked vertically */
-    align-items: center;
-    /* Horizontally center the content */
-    justify-content: center;
-    /* Vertically center the content */
-    min-height: 80vh;
-    /* Full viewport height for centering */
+    flex-direction: column; /* Keeps elements stacked vertically */
+    align-items: center; /* Horizontally center the content */
+    justify-content: center; /* Vertically center the content */
+    min-height: 80vh; /* Full viewport height for centering */
 }
-
 .tab {
     display: none;
 }
-
 .tab-links button {
     cursor: pointer;
     padding: 10px 20px;
     border: 1px solid #ccc;
     background: #f1f1f1;
 }
-
 .tab-links button.active {
-    background: #9c9b9b;
+    background: #ccc;
 }
-
 .container {
     width: 400px;
     padding: 14px;
     background-color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    position: relative;
-    top: 23px;
+    position: relative; 
+    top: 23px; 
     margin: auto;
 }
 
@@ -94,8 +81,7 @@ header {
 }
 
 .searchbar button:hover {
-    background-color: #e69500;
-    /* Darker orange */
+    background-color: #e69500; /* Darker orange */
 }
 
 .result h2,
@@ -117,8 +103,7 @@ header {
 }
 
 .result i:hover {
-    color: #FFA500;
-    /* Highlight icon on hover */
+    color: #FFA500; /* Highlight icon on hover */
 }
 
 .result {
@@ -147,77 +132,48 @@ header {
 .result a:hover {
     color: #e69500;
 }
-
-#wordofday-img,
-#word-img {
+#wordofday-img, #word-img {
     overflow: hidden;
-    display: block;
-    /* Ensure it behaves as a block element */
+    display: block; /* Ensure it behaves as a block element */
 }
 
-#wordofday-img img,
-#word-img img {
-    object-fit: contain;
-    /* Prevents image distortion */
-    display: block;
-    /* Ensure it behaves as a block element */
+#wordofday-img img, #word-img img {
+    object-fit: contain; /* Prevents image distortion */
+    display: block; /* Ensure it behaves as a block element */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    body {
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-            url('background_img_for_my_dictionary_app.jpeg');
-        background-size: cover;
-        background-position: center;
-
-    }
-
     header {
-        font-size: 24px;
-        /* Adjust font size for smaller screens */
-        height: auto;
-        /* Adjust height for flexibility */
+        font-size: 24px; /* Adjust font size for smaller screens */
+        height: auto; /* Adjust height for flexibility */
         padding: 10px;
     }
-
     .mainContainer {
-        flex-direction: column;
-        /* Stack elements vertically */
+        flex-direction: column; /* Stack elements vertically */
     }
-
     .container {
-        width: 95%;
-        /* Full-width for smaller screens */
+        width: 95%; /* Full-width for smaller screens */
         margin: 10px;
     }
-
     .searchbar button {
-        font-size: 14px;
-        /* Smaller button text */
+        font-size: 14px; /* Smaller button text */
     }
-
     .result h2,
     .result p {
-        font-size: 16px;
-        /* Adjust font size */
+        font-size: 16px; /* Adjust font size */
     }
 }
 
 @media (max-width: 480px) {
     header {
-        font-size: 18px;
-        /* Further reduce font size */
+        font-size: 18px; /* Further reduce font size */
     }
-
     .searchbar input,
     .searchbar button {
-        font-size: 12px;
-        /* Smaller input and button text */
+        font-size: 12px; /* Smaller input and button text */
     }
-
     .result {
-        font-size: 14px;
-        /* Adjust result font size */
+        font-size: 14px; /* Adjust result font size */
     }
 }

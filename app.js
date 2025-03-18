@@ -132,3 +132,64 @@ searchInput.addEventListener("keydown", (event) => {
         if (word) fetchWordData(word);
     }
 });
+let imgparenttag = document.getElementById("wordofday-img");
+let imgwordtag = document.getElementById("word-img");
+let img = document.createElement('img');
+let img1 = document.createElement('img');
+//seting image for word of day;
+function getimage(imgname) {
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL';
+    fetch(`https://api.pexels.com/v1/search?query=${imgname}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': apiKey
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            img.src = data.photos[0].src.medium;
+            img.alt = data.photos[0].alt;
+            img.style.height=200 + "px";
+            img.style.width = 350 + "px"; 
+            imgparenttag.appendChild(img);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            alert('Error:', error);
+        });
+}
+
+//setting image for inputword;
+function inputwordimg(imgname) {
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL';
+    fetch(`https://api.pexels.com/v1/search?query=${imgname}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': apiKey
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            img1.src = data.photos[0].src.medium;
+            img1.alt = data.photos[0].alt;
+            img1.style.height=200 + "px";
+            img1.style.width = 350 + "px"; 
+            imgwordtag.appendChild(img1);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            alert('Error:', error);
+        });
+}
+function openTab(tabName) {
+    let tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabName).style.display = 'block';
+
+    let buttons = document.querySelectorAll('.tab-links button');
+    buttons.forEach(button => button.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Set default active tab
+  openTab('Tab1');
