@@ -101,7 +101,7 @@ function displayWordData(result, word) {
         document.getElementById("example").textContent = data.meanings[0]?.definitions[0]?.example || "No example available";
         document.getElementById("synonyms").textContent = data.meanings[0]?.synonyms?.join(", ") || "No synonyms available";
         document.getElementById("antonyms").textContent = data.meanings[0]?.antonyms?.join(", ") || "No antonyms available";
-
+        console.log(result);
         // Prepare the pronunciation audio for the word
         prepareAudio(data.phonetics[0]?.audio);
     }
@@ -109,7 +109,7 @@ function displayWordData(result, word) {
 
 // Function to fetch and display an image related to a word
 async function fetchWordImage(word, elementId) {
-    const apiKey = 'YOUR_API_KEY'; // Replace with your Pexels API key
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL'; // Replace with your Pexels API key
     const url = `https://api.pexels.com/v1/search?query=${word}`;
 
     try {
@@ -139,20 +139,20 @@ async function fetchWordImage(word, elementId) {
 }
 
 // Function to switch between tabs
-function openTab(tabName) {
+function openTab(tabName, event) {
     const tabs = document.querySelectorAll('.tab'); // Select all tab elements
     tabs.forEach(tab => tab.style.display = 'none'); // Hide all tabs
     document.getElementById(tabName).style.display = 'block'; // Show the selected tab
 
     const buttons = document.querySelectorAll('.tab-links button'); // Select all tab buttons
     buttons.forEach(button => button.classList.remove('active')); // Remove active class from all buttons
-    event.target.classList.add('active'); // Add active class to the clicked button
+    //event.target.classList.add('active'); // Add active class to the clicked button
 }
 
 // Initialize the default tab and fetch Word of the Day on page load
 document.addEventListener("DOMContentLoaded", () => {
     fetchWordOfTheDay(); // Fetch and display Word of the Day
-    openTab('Tab1'); // Set default tab to "Tab1"
+    openTab('Tab2'); // Set default tab to "Tab1"
 });
 
 // Search functionality for fetching word data
