@@ -1,4 +1,4 @@
-// List of predefined words to be used for "Word of the Day"
+
 const wordsArray = [
     "serendipity", "ephemeral", "luminous", "exuberant", "melancholy",
     "tranquil", "ethereal", "ineffable", "sagacious", "halcyon",
@@ -7,48 +7,27 @@ const wordsArray = [
     "resilience", "tenacity", "wanderlust", "zenith", "cryptic",
     "idyllic", "jubilant", "pristine", "reverie", "whimsical"
 ];
-
-// Function to fetch and display the "Word of the Day"
+// Fetch Word of the Day
 async function fetchWordOfTheDay() {
     try {
-        // Get the current Word of the Day based on the date
-        const wordOfTheDay = getWordOfTheDay();
+        const currentDate = new Date();
+        const dayIndex = currentDate.getDate() % wordsArray.length;
+        const wordOfTheDay = wordsArray[dayIndex];
 
-        // Fetch word data from the dictionary API
-        const wordData = await fetchDictionaryData(wordOfTheDay);
+        const dictionaryApiBaseUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${wordOfTheDay}`;
+        const dictionaryResponse = await fetch(dictionaryApiBaseUrl);
+        const wordData = await dictionaryResponse.json();
 
-        // Display the Word of the Day on the page
         displayWordOfTheDay(wordData, wordOfTheDay);
+        getimage(wordOfTheDay);
+        imgwordtag.innerHTML = '';
 
-        // Fetch and display an image related to the Word of the Day
-        fetchWordImage(wordOfTheDay, "wordofday-img");
     } catch (error) {
-        // Handle any errors that occur during the fetch
-        console.error("Error fetching Word of the Day:", error);
         alert("An error occurred while fetching the Word of the Day.");
     }
 }
 
-// Function to determine the Word of the Day based on the date
-function getWordOfTheDay() {
-    const currentDate = new Date();
-    // Use the date to pick a word index from the array
-    const dayIndex = currentDate.getDate() % wordsArray.length;
-    return wordsArray[dayIndex];
-}
-
-// Fetch data for a given word from the dictionary API
-async function fetchDictionaryData(word) {
-    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-    const response = await fetch(url);
-
-    // Check if the API call was successful
-    if (!response.ok) throw new Error(`Failed to fetch data for "${word}"`);
-
-    return await response.json();
-}
-
-// Function to display the Word of the Day data on the page
+// Display Word of the Day
 function displayWordOfTheDay(result, word) {
     const currentDate = new Date().toDateString();
     document.getElementById("currentDate").innerText = `Today: ${currentDate}`;
@@ -57,114 +36,160 @@ function displayWordOfTheDay(result, word) {
     document.getElementById("dayWordmeaning").innerText = result[0]?.meanings[0]?.definitions[0]?.definition || "N/A";
     document.getElementById("dayWordexample").innerText = result[0]?.meanings[0]?.definitions[0]?.example || "No example available";
 
-    // Prepare the pronunciation audio for the word
-    prepareAudio(result[0]?.phonetics[0]?.audio);
+    // const audioSrc = result[0]?.phonetics[0]?.audio || null;
+    // prepareAudio(audioSrc);
+    
+    //changes do for audio;
+    let audioSrc='';
+    for (let i = 0; i < result[0].phonetics.length; i++) {
+        if (result[0].phonetics[i]?.audio) {
+            audioSrc=result[0]?.phonetics[i]?.audio;
+            break;
+        }
+    }
+    prepareAudio(audioSrc);
 }
 
-// Function to handle pronunciation audio
+// Handle word pronunciation audio
 function prepareAudio(audioSrc) {
     const dayWordVolume = document.getElementById("dayWordvolume");
+
     if (audioSrc) {
-        const audio = new Audio(audioSrc); // Create a new audio object
-        dayWordVolume.onclick = () => audio.play(); // Play audio on click
+        const audio = new Audio(audioSrc);
+        dayWordVolume.onclick = () => audio.play();
     } else {
         dayWordVolume.onclick = () => alert("No pronunciation audio available for this word.");
     }
 }
 
-// Function to fetch and display data for a searched word
-async function fetchWordData(word) {
-    try {
-        // Fetch word data from the dictionary API
-        const wordData = await fetchDictionaryData(word);
+document.addEventListener("DOMContentLoaded", fetchWordOfTheDay);
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
+const volume = document.getElementById("volume");
+const wordElement = document.getElementById("word");
+const phoneticsElement = document.getElementById("phonetics");
+const meaningElement = document.getElementById("meaning");
+const exampleElement = document.getElementById("example");
+const synonymsElement = document.getElementById("synonyms");
+const antonymsElement = document.getElementById("antonyms");
+const dayWordElement = document.getElementById("dayWord");
+let audio;
 
-        // Display the word data on the page
-        displayWordData(wordData, word);
-
-        // Fetch and display an image related to the searched word
-        fetchWordImage(word, "word-img");
-    } catch (error) {
-        console.error("Error fetching word data:", error);
-        alert(`Cannot find the word "${word}". Please try another.`);
-    }
+// Fetch and display word data
+function fetchWordData(word) {
+    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+    fetch(url)
+        .then(response => response.json())
+        .then((result) => {
+            imgwordtag.innerHTML = '';
+            displayWordData(result, word);
+            inputwordimg(word);
+        })
+        .catch(() => {
+            alert(`Cannot find the word "${word}". Please try another.`);
+        });
 }
 
-// Function to display data for a searched word
+// Display word data in the UI
 function displayWordData(result, word) {
     if (result.title) {
         alert(`Cannot find the meaning of "${word}".`);
     } else {
         const data = result[0];
-        document.getElementById("word").textContent = data.word || "N/A";
-        document.getElementById("phonetics").textContent = data.phonetics[0]?.text || "N/A";
-        document.getElementById("meaning").textContent = data.meanings[0]?.definitions[0]?.definition || "N/A";
-        document.getElementById("example").textContent = data.meanings[0]?.definitions[0]?.example || "No example available";
-        document.getElementById("synonyms").textContent = data.meanings[0]?.synonyms?.join(", ") || "No synonyms available";
-        document.getElementById("antonyms").textContent = data.meanings[0]?.antonyms?.join(", ") || "No antonyms available";
-        console.log(result);
-        // Prepare the pronunciation audio for the word
-        prepareAudio(data.phonetics[0]?.audio);
+        wordElement.textContent = data.word || "N/A";
+        phoneticsElement.textContent = data.phonetics[0]?.text || "N/A";
+        meaningElement.textContent = data.meanings[0]?.definitions[0]?.definition || "N/A";
+        exampleElement.textContent = data.meanings[0]?.definitions[0]?.example || "No example available";
+        synonymsElement.textContent = data.meanings[0]?.synonyms?.join(", ") || "No synonyms available";
+        antonymsElement.textContent = data.meanings[0]?.antonyms?.join(", ") || "No antonyms available";
+        // console.log(result);
+        // audio = new Audio(data.phonetics[0]?.audio || null);
+
+        //changes do for audio
+        for (let i = 0; i < data.phonetics.length; i++) {
+            if (data.phonetics[i]?.audio) {
+                audio = new Audio(data.phonetics[i]?.audio);
+                break;
+            }
+        }
     }
 }
 
-// Function to fetch and display an image related to a word
-async function fetchWordImage(word, elementId) {
-    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL'; // Replace with your Pexels API key
-    const url = `https://api.pexels.com/v1/search?query=${word}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'Authorization': apiKey }
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch image");
-
-        const data = await response.json();
-        const imageContainer = document.getElementById(elementId);
-        imageContainer.innerHTML = ''; // Clear previous images
-
-        // Create and display the image
-        const img = document.createElement('img');
-        img.src = data.photos[0]?.src.medium || '';
-        img.alt = data.photos[0]?.alt || 'Image unavailable';
-        img.style.height = "200px";
-        img.style.width = "350px";
-
-        imageContainer.appendChild(img);
-    } catch (error) {
-        console.error("Error fetching image:", error);
-        alert("Unable to fetch image.");
-    }
-}
-
-// Function to switch between tabs
-function openTab(tabName, event) {
-    const tabs = document.querySelectorAll('.tab'); // Select all tab elements
-    tabs.forEach(tab => tab.style.display = 'none'); // Hide all tabs
-    document.getElementById(tabName).style.display = 'block'; // Show the selected tab
-
-    const buttons = document.querySelectorAll('.tab-links button'); // Select all tab buttons
-    buttons.forEach(button => button.classList.remove('active')); // Remove active class from all buttons
-    //event.target.classList.add('active'); // Add active class to the clicked button
-}
-
-// Initialize the default tab and fetch Word of the Day on page load
-document.addEventListener("DOMContentLoaded", () => {
-    fetchWordOfTheDay(); // Fetch and display Word of the Day
-    openTab('Tab2'); // Set default tab to "Tab1"
+// Play pronunciation audio
+volume.addEventListener("click", () => {
+    if (audio) audio.play();
+    else alert("No pronunciation audio available.");
 });
 
-// Search functionality for fetching word data
-document.getElementById("searchBtn").addEventListener("click", () => {
-    const word = document.getElementById("searchInput").value.trim();
+searchBtn.addEventListener("click", () => {
+    const word = searchInput.value.trim();
     if (word) fetchWordData(word);
 });
 
-// Trigger search when the Enter key is pressed
-document.getElementById("searchInput").addEventListener("keydown", (event) => {
+searchInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-        const word = event.target.value.trim();
+        const word = searchInput.value.trim();
         if (word) fetchWordData(word);
     }
 });
+let imgparenttag = document.getElementById("wordofday-img");
+let imgwordtag = document.getElementById("word-img");
+let img = document.createElement('img');
+let img1 = document.createElement('img');
+//seting image for word of day;
+function getimage(imgname) {
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL';
+    fetch(`https://api.pexels.com/v1/search?query=${imgname}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': apiKey
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            img.src = data.photos[0].src.medium;
+            img.alt = data.photos[0].alt;
+            img.style.height=200 + "px";
+            img.style.width = 350 + "px"; 
+            imgparenttag.appendChild(img);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            alert('Error:', error);
+        });
+}
+
+//setting image for inputword;
+function inputwordimg(imgname) {
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL';
+    fetch(`https://api.pexels.com/v1/search?query=${imgname}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': apiKey
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            img1.src = data.photos[0].src.medium;
+            img1.alt = data.photos[0].alt;
+            img1.style.height=200 + "px";
+            img1.style.width = 350 + "px"; 
+            imgwordtag.appendChild(img1);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            alert('Error:', error);
+        });
+}
+function openTab(tabName) {
+    let tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabName).style.display = 'block';
+
+    let buttons = document.querySelectorAll('.tab-links button');
+    buttons.forEach(button => button.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Set default active tab
+  openTab('Tab1');
