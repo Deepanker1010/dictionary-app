@@ -109,7 +109,7 @@ function displayWordData(result, word) {
 
 // Function to fetch and display an image related to a word
 async function fetchWordImage(word, elementId) {
-    const apiKey = 'YOUR_API_KEY'; // Replace with your Pexels API key
+    const apiKey = '95W7bB2ThGyLIRIg1QgXfhCv9Ll7dCxvb2QqYTOzVPx506bJhjqKCYbL'; // Replace with your Pexels API key
     const url = `https://api.pexels.com/v1/search?query=${word}`;
 
     try {
